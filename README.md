@@ -192,3 +192,12 @@ NameCombinationSet          GeneratedName
 - **Google OAuth not working**: Make sure your redirect URI matches exactly: `http://localhost:3000/api/auth/callback/google`
 - **Database connection error**: Verify your `DATABASE_URL` includes `?sslmode=require` for Neon.
 - **Prisma client not found**: Run `npx prisma generate` after installing dependencies.
+
+## Why should .env.local never be committed? 
+- .env.local contains secret variables that should never be allowed out into the public where anyone could access them. This could allow others to steal your API keys, which would cost you a lot of money. They could also break your project by having access to your database information.
+
+## Why are GitHub Secrets safer than plain environment variables?
+- GitHub secrets only exist on GitHub, and they are inherently secure. Environment variables exist on your local computer but can accidentally be committed to your repo, making them slightly riskier to use. They are also not automatically encrypted.
+
+## What would happen if you wrote the following in your yml file?
+- It would be committed and pushed to GitHub, where the value could be stolen and used maliciously. It would not be protected at all, and would defeat the purpose of having it as a GitHub secret. 
