@@ -3,6 +3,8 @@ import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/prisma";
 
+export const runtime = "nodejs"
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -14,11 +16,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/login",
   },
+  session: {
+    strategy: "jwt"
+  },
   callbacks: {
-    session({ session, user }) {
+    session({ session, token }) {
       // Attach the user ID to the session so we can use it in API routes
       if (session.user) {
-        session.user.id = user.id;
+        session.user.id = token.sub!;
       }
       return session;
     },
